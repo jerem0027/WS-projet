@@ -69,8 +69,8 @@ with open("fake_trains.csv", "w") as f:
         data.append(date_arrival)
 
         data.append(20)
-        data.append(randint(0, MAX_PLACE - 20))
-        data.append(250 - data[-1])
+        data.append(randint(0, MAX_PLACE - data[-1]))
+        data.append(MAX_PLACE - data[-1] - data[-2])
 
         f.write(";".join([str(d) for d in data]))
         f.write("\n")
