@@ -1,21 +1,18 @@
-package db.interation;
+package db.interaction;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
- 
-/**
- * This program demonstrates making JDBC connection to a SQLite database.
- * @author www.codejava.net
- *
- */
-public class JdbcSQLiteConnection {
+
+
+
+public class SQLiteConnection {
 	
     private Connection connect() {
         // SQLite connection string
-        String url = "jdbc:sqlite:C://sqlite/db/test.db";
+        String url = "jdbc:sqlite:/home/jeremie/eclipse-workspace/WS-projet/tea_ji_wi.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -28,6 +25,12 @@ public class JdbcSQLiteConnection {
     public String select(String sql){   
     	
     	String rtn = "";
+    	try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
