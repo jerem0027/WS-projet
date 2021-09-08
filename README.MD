@@ -1,5 +1,9 @@
 # Webservice - Train journey booking service
 
+## Requirements
+
+sqlitejdbc v3.7.2 : http://www.java2s.com/Code/Jar/s/Downloadsqlitejdbc372jar.html
+
 ## User logging
 
 ## Train Searching
@@ -28,3 +32,4 @@ Require :
 ## Rest
 
 This WS provide response to SOAP requests
+
