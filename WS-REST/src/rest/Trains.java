@@ -25,10 +25,8 @@ public class Trains extends ServerResource {
 	}
 	
 	@Get
-	public String checkCity(String departur, String arrival) {
-    	String sql = "SELECT * FROM Train WHERE departure_station =" + departur.toLowerCase() + " arrival_city = " + arrival.toLowerCase();
-    	String data = "SELECT * FROM train WHERE departure_city = '" + departur + "' AND arrival_city = '" + arrival+"'";
-    	System.out.println(data);
-    	return db.select(data);
+	public String checkCity(String from, String to) {
+    	String sql = "SELECT * FROM train WHERE departure_city = '" + from + "' AND arrival_city = '" + to+"'";
+    	return db.select(sql);
 	}
 }

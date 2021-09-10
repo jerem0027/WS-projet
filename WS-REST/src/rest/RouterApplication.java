@@ -30,9 +30,9 @@ public class RouterApplication extends Application{
 	    public void handle(Request request, Response response) {
 	        // Print the user name of the requested orders
 	    	Trains t = new Trains();
-	    	String departur = (String) request.getAttributes().get("departure");
-	    	String arrival = (String) request.getAttributes().get("arrival");
-	        response.setEntity(t.checkCity(departur, arrival), MediaType.TEXT_PLAIN);
+	    	String from = (String) request.getAttributes().get("from");
+	    	String to = (String) request.getAttributes().get("to");
+	        response.setEntity(t.checkCity(from, to), MediaType.TEXT_PLAIN);
 	    }
 	};
 	
@@ -46,7 +46,7 @@ public class RouterApplication extends Application{
 		// Defines only two routes
 		
 		router.attach("/trains/allTrains", allTrains);
-		router.attach("/trains/from/{departure}/to/{arrival}", city);
+		router.attach("/trains/from/{from}/to/{to}", city);
 		router.attach("/trains", Trains.class);
 		router.attach("/users", Users.class);
 		return router;

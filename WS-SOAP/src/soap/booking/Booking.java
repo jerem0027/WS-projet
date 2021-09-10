@@ -28,9 +28,9 @@ public class Booking {
 		} 
 	}
 	
-	public List<String> city(String departure, String arrival){
+	public List<String> city(String from, String to){
 		// Create the client resource  
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/from/"+ departure +"/to/"+ arrival +"");
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/from/"+ from +"/to/"+ to);
 		List<String> al = new ArrayList<String>();
 		try {
 			String str[] = resource.get().getText().split("\n");
