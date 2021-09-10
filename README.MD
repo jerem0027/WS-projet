@@ -2,7 +2,7 @@
 
 ## Requirements
 
-sqlitejdbc v3.7.2 : http://www.java2s.com/Code/Jar/s/Downloadsqlitejdbc372jar.html
+sqlitejdbc v3.7.2 : http://www.java2s.com/Code/Jar/s/Downloadsqlitejdbc372jar.htm
 
 ## User logging
 
