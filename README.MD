@@ -4,6 +4,10 @@
 
 sqlitejdbc v3.7.2 : http://www.java2s.com/Code/Jar/s/Downloadsqlitejdbc372jar.html
 
+### data genrator
+```sh
+pip3 install SQLAlchemy==1.4.23
+```
 ## User logging
 
 ## Train Searching
