@@ -2,8 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.inspection import inspect
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.expression import null
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql.sqltypes import Boolean
 
 from random_train import RandomTrain
 
@@ -38,6 +40,7 @@ class Ticket(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('User.id'))
     train_id = Column(Integer, ForeignKey('Train.id'))
+    flexible = Column(Boolean, nullable=False)
 
 
 class Database:
