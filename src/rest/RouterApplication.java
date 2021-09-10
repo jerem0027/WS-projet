@@ -8,6 +8,7 @@ import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
+import org.restlet.resource.Resource;
 
 import db.users.Users;
 
@@ -19,10 +20,20 @@ public class RouterApplication extends Application{
 	    public void handle(Request request, Response response) {
 	    	Trains t = new Trains();
 	        // Print the user name of the requested orders
-	        response.setEntity(t.allTrains().toString(), MediaType.TEXT_URI_LIST);
+	        response.setEntity(t.allTrains(), MediaType.TEXT_PLAIN);
 	    }
 	};
 	
+	Restlet city = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+	        // Print the user name of the requested orders
+	    	Trains t = new Trains();
+	    	String departur = (String) request.getAttributes().get("departure");
+	    	String arrival = (String) request.getAttributes().get("arrival");
+	        response.setEntity(t.checkCity(departur, arrival), MediaType.TEXT_PLAIN);
+	    }
+	};
 	
 	/**
 	 * Creates a root Restlet that will receive all incoming calls.
@@ -32,7 +43,9 @@ public class RouterApplication extends Application{
 		// Create a router Restlet that routes each call to a new respective instance of resource.
 		Router router = new Router(getContext());
 		// Defines only two routes
+		
 		router.attach("/trains/allTrains", allTrains);
+		router.attach("/trains/from/{departure}/to/{arrival}", city);
 		router.attach("/trains", Trains.class);
 		router.attach("/users", Users.class);
 		return router;
