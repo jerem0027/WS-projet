@@ -1,27 +1,32 @@
 package searching;
 
+import java.util.ArrayList;
+
 import db.interaction.SQLiteConnection;
 
 public class Searching {
 	
-	public String allTrains() {
-		SQLiteConnection db = new SQLiteConnection();
-		String sql = "SELECT * FROM train";
-		
-		return db.select(sql);
+	private SQLiteConnection db;
+	
+	public Searching() {
+		this.db = new SQLiteConnection();
+	}
+	
+	public ArrayList<String> allTrains() {
+		return db.selectList("SELECT * FROM train");
 	}
 	
 	public String availableTrains(String departur, String arrival) {
-		return "work in progress";
+		return db.select("SELECT * FROM train WHERE departure_station =" + departur.toLowerCase() + " arrival_city = " + arrival.toLowerCase());
 	}
 	
 	public String availableTrains(int dateDepartur, int DateArrival) {
-		
-		return "work in progress";
+		/* TOFIX */
+		return db.select("SELECT * FROM train WHERE departure_date =" + dateDepartur + " arrival_date = " + DateArrival);
 	}
 	
 	public String availableTrains(int nbTicket, String ticketClass) {
-		
-		return "work in progress";
+		/* class: First, Business or Standard */
+		return db.select("SELECT * FROM train WHERE nb_ticket_"+ ticketClass.toLowerCase() +">=" + nbTicket);
 	}
 }
