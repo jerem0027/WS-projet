@@ -11,9 +11,18 @@ import java.util.ArrayList;
 
 
 public class SQLiteConnection {
+	
     private String url = "jdbc:sqlite:/home/jeremie/eclipse-workspace/WS-projet/tea_ji_wi.db";
 	
     private Connection connect() {
+    	try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	this.url = "jdbc:sqlite:" + System.getenv("DB_PATH");
+    	System.out.println(this.url);
         // SQLite connection string
         Connection conn = null;
         try {
@@ -26,12 +35,6 @@ public class SQLiteConnection {
     
     public ArrayList<String> selectList(String sql) {
     	ArrayList<String> rtn = new ArrayList<String>();
-    	try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
@@ -46,7 +49,7 @@ public class SQLiteConnection {
                         rs.getString("arrival_city") + " | " +
                         rs.getString("departure_date") + " | " +
                         rs.getString("arrival_date") + " | " +
-                        rs.getString("nb_ticket_premier") + " | " +
+                        rs.getString("nb_ticket_premiere") + " | " +
                         rs.getString("nb_ticket_standard") + " | " +
                         rs.getString("nb_ticket_eco"));
             }
@@ -57,15 +60,8 @@ public class SQLiteConnection {
         }
     }
     
-    public String select(String sql){   
-    	
+    public String select(String sql){   	
     	String rtn = "";
-    	try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
@@ -88,5 +84,17 @@ public class SQLiteConnection {
         } catch (SQLException e) {
             return e.getMessage();
         }
+    }
+    
+    public ResultSet performQuery(String sql) {
+    	Connection conn = this.connect();
+    	Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			return stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 }

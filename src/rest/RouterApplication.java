@@ -9,6 +9,8 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
+import db.users.Users;
+
  
 public class RouterApplication extends Application{
 	
@@ -32,7 +34,7 @@ public class RouterApplication extends Application{
 		// Defines only two routes
 		router.attach("/trains/allTrains", allTrains);
 		router.attach("/trains", Trains.class);
-		router.attach("/users/{uid}", UserResource.class);
+		router.attach("/users", Users.class);
 		return router;
 	}
 	
