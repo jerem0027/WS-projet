@@ -3,7 +3,7 @@ package rest;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import db.interaction.SQLiteConnection;
+import rest.db.SQLiteConnection;
 
 
 
@@ -27,7 +27,7 @@ public class Trains extends ServerResource {
 	@Get
 	public String checkCity(String departur, String arrival) {
     	String sql = "SELECT * FROM Train WHERE departure_station =" + departur.toLowerCase() + " arrival_city = " + arrival.toLowerCase();
-    	String data = "SELECT * FROM Train WHERE departure_city = '" + departur + "' AND arrival_city = '" + arrival+"'";
+    	String data = "SELECT * FROM train WHERE departure_city = '" + departur + "' AND arrival_city = '" + arrival+"'";
     	System.out.println(data);
     	return db.select(data);
 	}

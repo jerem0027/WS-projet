@@ -1,4 +1,4 @@
-package db.users;
+package rest.db.users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import db.interaction.SQLiteConnection;
+import rest.db.SQLiteConnection;
 
 public class Users extends ServerResource{
 

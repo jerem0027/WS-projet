@@ -1,4 +1,4 @@
-package searching;
+package soap;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.List;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 
-import db.interaction.SQLiteConnection;
+import rest.db.SQLiteConnection;
 
-public class Searching {
+public class Booking {
 
 	private SQLiteConnection db;
 
@@ -33,7 +33,7 @@ public class Searching {
 	
 	public List<String> city(String departur, String arrival){
 		// Create the client resource  
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/allTrains/{"+ departur.toLowerCase() +"}/{"+ arrival.toLowerCase() +"}");
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/form/{"+ departur +"}/to/{"+ arrival +"}");
 		List<String> al = new ArrayList<String>();
 		try {
 			String str[] = resource.get().getText().split("\n");

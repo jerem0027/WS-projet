@@ -8,9 +8,10 @@ import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import org.restlet.resource.Resource;
 
-import db.users.Users;
+import rest.db.users.Users;
+
+import org.restlet.resource.Resource;
 
  
 public class RouterApplication extends Application{

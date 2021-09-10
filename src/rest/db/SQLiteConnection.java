@@ -1,4 +1,4 @@
-package db.interaction;
+package rest.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class SQLiteConnection {
 	
-    private String url = "jdbc:sqlite:/home/jeremie/eclipse-workspace/WS-projet/tea_ji_wi.db";
+    private String url;
 	
     private Connection connect() {
     	try {
@@ -49,9 +49,9 @@ public class SQLiteConnection {
                         rs.getString("arrival_city") + " | " +
                         rs.getString("departure_date") + " | " +
                         rs.getString("arrival_date") + " | " +
-                        rs.getString("nb_ticket_premiere") + " | " +
-                        rs.getString("nb_ticket_standard") + " | " +
-                        rs.getString("nb_ticket_eco"));
+                        rs.getString("nb_ticket_first") + " | " +
+                        rs.getString("nb_ticket_business") + " | " +
+                        rs.getString("nb_ticket_standard"));
             }
             return rtn;
         } catch (SQLException e) {
@@ -76,9 +76,9 @@ public class SQLiteConnection {
                         rs.getString("arrival_city") + " | " +
                         rs.getString("departure_date") + " | " +
                         rs.getString("arrival_date") + " | " +
-                        rs.getString("nb_ticket_premier") + " | " +
-                        rs.getString("nb_ticket_standard") + " | " +
-                        rs.getString("nb_ticket_eco") + "\n";
+                        rs.getString("nb_ticket_first") + " | " +
+                        rs.getString("nb_ticket_business") + " | " +
+                        rs.getString("nb_ticket_standard") + "\n";
             }
             return rtn;
         } catch (SQLException e) {
