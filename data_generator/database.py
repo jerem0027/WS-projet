@@ -23,9 +23,9 @@ class Train(Base):
     arrival_city = Column(String, nullable=False)
     departure_date = Column(DateTime, nullable=False)
     arrival_date = Column(DateTime, nullable=False)
-    nb_ticket_premiere = Column(Integer, nullable=False)
+    nb_ticket_first = Column(Integer, nullable=False)
+    nb_ticket_business = Column(Integer, nullable=False)
     nb_ticket_standard = Column(Integer, nullable=False)
-    nb_ticket_eco = Column(Integer, nullable=False)
     
 class User(Base):
     __tablename__= "User"
