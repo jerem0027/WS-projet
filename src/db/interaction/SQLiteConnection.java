@@ -6,20 +6,55 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.ArrayList;
+
 
 
 public class SQLiteConnection {
+    private String url = "jdbc:sqlite:/home/jeremie/eclipse-workspace/WS-projet/tea_ji_wi.db";
 	
     private Connection connect() {
         // SQLite connection string
-        String url = "jdbc:sqlite:/home/jeremie/eclipse-workspace/WS-projet/tea_ji_wi.db";
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(this.url);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return conn;
+    }
+    
+    public ArrayList<String> selectList(String sql) {
+    	ArrayList<String> rtn = new ArrayList<String>();
+    	try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                rtn.add(rs.getInt("id") + " | " +
+                        rs.getString("name") + " | " +
+                        rs.getString("departure_station") + " | " +
+                        rs.getString("departure_city") + " | " +
+                        rs.getString("arrival_station") + " | " +
+                        rs.getString("arrival_city") + " | " +
+                        rs.getString("departure_date") + " | " +
+                        rs.getString("arrival_date") + " | " +
+                        rs.getString("nb_ticket_premier") + " | " +
+                        rs.getString("nb_ticket_standard") + " | " +
+                        rs.getString("nb_ticket_eco"));
+            }
+            return rtn;
+        } catch (SQLException e) {
+        	rtn.add(e.getMessage());
+            return rtn;
+        }
     }
     
     public String select(String sql){   
