@@ -1,2 +1,5 @@
-fake_trains.csv
-/build/
+# databse
+*.db
+
+# python
+__pycache__

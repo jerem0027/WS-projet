@@ -10,6 +10,8 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 import org.restlet.resource.Resource;
 
+import db.users.Users;
+
  
 public class RouterApplication extends Application{
 	
@@ -44,6 +46,8 @@ public class RouterApplication extends Application{
 		
 		router.attach("/trains/allTrains", allTrains);
 		router.attach("/trains/from/{departure}/to/{arrival}", city);
+		router.attach("/trains", Trains.class);
+		router.attach("/users", Users.class);
 		return router;
 	}
 	
