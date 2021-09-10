@@ -66,11 +66,10 @@ class RandomTrain:
             "arrival_station": STATIONS[1][0],
             "arrival_city": STATIONS[1][1],
             "departure_date": rand_date(),
-            "nb_ticket_premiere": 20
+            "nb_ticket_first": 20
         }
-        
         data["arrival_date"] = data["departure_date"] + datetime.timedelta(hours=randint(2, 8))
-        data["nb_ticket_standard"] = randint(0, MAX_PLACE - data["nb_ticket_premiere"])
-        data["nb_ticket_eco"] = MAX_PLACE - data["nb_ticket_premiere"] - data["nb_ticket_standard"]
+        data["nb_ticket_business"] = randint(0, MAX_PLACE - data["nb_ticket_first"])
+        data["nb_ticket_standard"] = MAX_PLACE - data["nb_ticket_first"] - data["nb_ticket_business"]
 
         return data
