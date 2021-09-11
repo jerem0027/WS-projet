@@ -11,8 +11,6 @@ import org.restlet.routing.Router;
 
 import rest.db.users.Users;
 
-import org.restlet.resource.Resource;
-
  
 public class RouterApplication extends Application{
 	
@@ -68,7 +66,14 @@ public class RouterApplication extends Application{
 	        response.setEntity(t.checkStation(fromStation, toStation), MediaType.TEXT_PLAIN);
 	    }
 	};
-	
+
+    Restlet trainClass = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+            Trains t = new Trains();
+	        response.setEntity(t.toString(), MediaType.TEXT_HTML);
+	    }
+	};
 	
 	/**
 	 * Creates a root Restlet that will receive all incoming calls.
@@ -84,21 +89,18 @@ public class RouterApplication extends Application{
 		router.attach("/trains/fromStation/{fromStation}/toStation/{toStation}", station);
 		router.attach("/trains/dateD/{dateD}/dateA/{dateA}", date);
 		router.attach("/trains/ndTicket/{ndTicket}/class/{classT}", seat);
-		
-		
-		router.attach("/trains", Trains.class);
+		router.attach("/trains", trainClass);
 		router.attach("/users", Users.class);
 		return router;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
 		// Create a new Restlet component and add a HTTP server connector to it  
 		Component component = new Component();  
 		component.getServers().add(Protocol.HTTP, 8182); 
  
 		// Attach the application to the component and start it  
 		component.getDefaultHost().attach(new RouterApplication());  
-		component.start();  
+		component.start();
 	}	
 }

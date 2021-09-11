@@ -5,10 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import java.util.ArrayList;
-
-
 
 public class SQLiteConnection {
 	
@@ -18,7 +15,6 @@ public class SQLiteConnection {
     	try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
     	this.url = "jdbc:sqlite:" + System.getenv("DB_PATH");
@@ -58,6 +54,10 @@ public class SQLiteConnection {
         	rtn.add(e.getMessage());
             return rtn;
         }
+    }
+    
+    public String insert(String sql) {
+    	return "TODO";
     }
     
     public String select(String sql){   	

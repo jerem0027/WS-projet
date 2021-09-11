@@ -16,7 +16,16 @@ public class Trains extends ServerResource {
 	
 	@Get
 	public String toString() {
-		return "Test";
+        String a = "<a href='http://localhost:8182";
+        String b = "'>";
+        String c = "</a>";
+        String br = "<br>";
+		String list = a + "/trains/all" + b + "/trains/all"+c+br;
+		list += a+ "/trains/from/{from}/to/{to}" + b +"/trains/from/{from}/to/{to}"+c+br;
+		list += a+ "/trains/fromStation/{fromStation}/toStation/{toStation}" + b +"/trains/fromStation/{fromStation}/toStation/{toStation}"+c+br;
+		list += a+ "/trains/dateD/{dateD}/dateA/{dateA}" + b +"/trains/dateD/{dateD}/dateA/{dateA}"+c+br;
+		list += a+ "/trains/ndTicket/{ndTicket}/class/{classT}" + b +"/trains/ndTicket/{ndTicket}/class/{classT}"+c+br;
+		return list;
 	}
 	
 	@Get
