@@ -10,7 +10,7 @@ import org.restlet.resource.ResourceException;
 
 
 public class Booking {
-	
+
 	public List<String> allTrains() {
 		// Create the client resource
 		ClientResource resource = new ClientResource("http://localhost:8182/trains/allTrains");
@@ -27,7 +27,24 @@ public class Booking {
 			return al;
 		} 
 	}
-	
+
+	public List<String> date(String dateD, String dateA){
+		// Create the client resource  
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/dateD/"+ dateD +"/dateA/"+ dateA);
+		List<String> al = new ArrayList<String>();
+		try {
+			String str[] = resource.get().getText().split("\n");
+			al = Arrays.asList(str);
+			return al;
+		} catch (ResourceException e) {
+			al.add(e.toString());
+			return al;
+		} catch (IOException e) {
+			al.add(e.toString());
+			return al;
+		} 
+	}
+
 	public List<String> city(String from, String to){
 		// Create the client resource  
 		ClientResource resource = new ClientResource("http://localhost:8182/trains/from/"+ from +"/to/"+ to);
@@ -42,6 +59,6 @@ public class Booking {
 		} catch (IOException e) {
 			al.add(e.toString());
 			return al;
-		} 
+		}
 	}
 }

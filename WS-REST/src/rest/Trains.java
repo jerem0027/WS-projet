@@ -29,4 +29,18 @@ public class Trains extends ServerResource {
     	String sql = "SELECT * FROM train WHERE departure_city = '" + from + "' AND arrival_city = '" + to+"'";
     	return db.select(sql);
 	}
+	
+	@Get
+	public String checkDate(String dateD, String dateA) {
+    	String sql = "SELECT * FROM train WHERE departure_date LIKE '" + dateD + "%' AND arrival_date LIKE '" + dateA+"%'";
+		System.out.println(sql);
+    	return db.select(sql);
+	}
+	
+	@Get
+	public String checkSeat(String nbTicket, String classT) {
+    	String sql = "SELECT * FROM train WHERE nb_ticket_"+ classT + ">= "+nbTicket;
+		System.out.println(sql);
+    	return db.select(sql);
+	}
 }
