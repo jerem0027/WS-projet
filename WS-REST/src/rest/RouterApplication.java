@@ -58,6 +58,18 @@ public class RouterApplication extends Application{
 	    }
 	};
 	
+	Restlet station = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+	        // Print the user name of the requested orders
+	    	Trains t = new Trains();
+	    	String fromStation = (String) request.getAttributes().get("fromStation");
+	    	String toStation = (String) request.getAttributes().get("toStation");
+	        response.setEntity(t.checkStation(fromStation, toStation), MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	
 	/**
 	 * Creates a root Restlet that will receive all incoming calls.
 	 */
@@ -69,8 +81,11 @@ public class RouterApplication extends Application{
 		
 		router.attach("/trains/all", allTrains);
 		router.attach("/trains/from/{from}/to/{to}", city);
+		router.attach("/trains/fromStation/{fromStation}/toStation/{toStation}", station);
 		router.attach("/trains/dateD/{dateD}/dateA/{dateA}", date);
 		router.attach("/trains/ndTicket/{ndTicket}/class/{classT}", seat);
+		
+		
 		router.attach("/trains", Trains.class);
 		router.attach("/users", Users.class);
 		return router;

@@ -61,4 +61,21 @@ public class Booking {
 			return al;
 		}
 	}
+	
+	public List<String> station(String fromStation, String toStation){
+		// Create the client resource  
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/fromStation/"+ fromStation +"/toStation/"+ toStation);
+		List<String> al = new ArrayList<String>();
+		try {
+			String str[] = resource.get().getText().split("\n");
+			al = Arrays.asList(str);
+			return al;
+		} catch (ResourceException e) {
+			al.add(e.toString());
+			return al;
+		} catch (IOException e) {
+			al.add(e.toString());
+			return al;
+		} 
+	}
 }
