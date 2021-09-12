@@ -5,14 +5,18 @@ import org.restlet.Component;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
+import org.restlet.data.Status;
 import org.restlet.routing.Router;
 
 import rest.db.users.Users;
 
  
 public class RouterApplication extends Application{
+	private int currentUserID = -1 ;
+	
 	
 	Restlet allTrains = new Restlet(getContext()) {
 	    @Override
@@ -75,6 +79,49 @@ public class RouterApplication extends Application{
 	    }
 	};
 	
+	Restlet login = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+            Users u = new Users();
+            Form form = request.getResourceRef().getQueryAsForm();            
+            
+            String name = form.getFirstValue("name");
+            String pwd = form.getFirstValue("pwd");
+            
+            setCurrentUserID(u.getUser(name, pwd));
+            
+            String msg = "";
+            if(currentUserID == -1) {
+            	msg = "Wrong user or pwd";
+            }else {
+            	msg = "Authenticated as " + name + ", user id is " + currentUserID;
+            }            
+	        response.setEntity(msg, MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	Restlet register = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+            Users u = new Users();
+            Form form = request.getResourceRef().getQueryAsForm();            
+            
+            String name = form.getFirstValue("name");
+            String pwd = form.getFirstValue("pwd");
+            
+            setCurrentUserID(u.addUser(name, pwd));
+            
+            String msg = "";
+            if(currentUserID == -1) {
+            	msg = "Cant create your accoun";
+            }else {
+            	msg = "Account created for " + name + ", user id is " + currentUserID;
+            }            
+	        response.setEntity(msg, MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	
 	/**
 	 * Creates a root Restlet that will receive all incoming calls.
 	 */
@@ -84,14 +131,22 @@ public class RouterApplication extends Application{
 		Router router = new Router(getContext());
 		// Defines only two routes
 		
-		router.attach("/trains/all", allTrains);
+		router.attach("/trains/allTrains", allTrains);
 		router.attach("/trains/from/{from}/to/{to}", city);
 		router.attach("/trains/fromStation/{fromStation}/toStation/{toStation}", station);
 		router.attach("/trains/dateD/{dateD}/dateA/{dateA}", date);
 		router.attach("/trains/ndTicket/{ndTicket}/class/{classT}", seat);
 		router.attach("/trains", trainClass);
+
 		router.attach("/users", Users.class);
+		router.attach("/users/login", login);
+		router.attach("/users/register", register);
 		return router;
+	}
+	
+	private void setCurrentUserID(int id) {
+		this.currentUserID = id;
+		System.out.println(this.currentUserID + " - " + id);
 	}
 	
 	public static void main(String[] args) throws Exception {

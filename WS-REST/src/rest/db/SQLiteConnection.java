@@ -2,6 +2,7 @@ package rest.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -92,6 +93,18 @@ public class SQLiteConnection {
 		try {
 			stmt = conn.createStatement();
 			return stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+    }
+    public ResultSet insertData(String sql) {
+    	Connection conn = this.connect();
+    	PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.execute();
+			return stmt.getGeneratedKeys();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

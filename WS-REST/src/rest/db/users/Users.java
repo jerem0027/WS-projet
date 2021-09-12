@@ -16,23 +16,43 @@ public class Users extends ServerResource{
 	}
 	
 	@Get
-	public boolean isValidUser(String username, String pwd) {
-		
-		System.out.println("HELLO BOYS");
-		System.out.println(username + " - " + pwd);
-		String query = "SELECT COUNT(*) FROM User "
-				+ "WHERE name = " + username + " "
-				+ "AND password = " + pwd;
+	public int getUser(String username, String pwd) {
+		String query = "SELECT * FROM User "
+				+ "WHERE name = '" + username + "' "
+				+ "AND password = '" + pwd + "'";
 		
 		ResultSet rs = db.performQuery(query);
+		int userId = -1, nb = 0;
 		try {
-			int x = rs.getInt(1);
-			System.out.println("Size= " + x);
+			while(rs.next()){
+				nb += 1;
+				userId = rs.getInt("id");
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int x = 5;
-		return false;
+		return nb == 1 ? userId : -1;
 	}
+	
+	@Get
+	public int addUser(String username, String pwd) {
+		String query = "INSERT INTO User (name, password) "
+				+ "VALUES  ('" + username + "', '" + pwd + "')";
+		ResultSet rs = db.insertData(query);
+		int userId = -1;
+		try {
+			System.out.println(rs.toString());
+			if(rs.next()){
+
+				System.out.println(rs.toString());
+				userId = rs.getInt(1);
+				System.out.println(userId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userId;
+		
+	}
+	
 }
