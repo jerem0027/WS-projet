@@ -10,48 +10,21 @@ import org.restlet.resource.ResourceException;
 
 
 public class Booking {
+	ClientResource resource = new ClientResource("http://localhost:8182/trains/all");
 
-	public List<String> allTrains() {
-		// Create the client resource
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/allTrains");
+	public List<String> all(String stationD, String stationA, String cityA, String cityD, String dateD) {
+		resource.addQueryParameter("stationD", stationD);
+		resource.addQueryParameter("stationA", stationA);
+		resource.addQueryParameter("cityA", cityA);
+		resource.addQueryParameter("cityD", cityD);
+		resource.addQueryParameter("dateD", dateD);
 		List<String> al = new ArrayList<String>();
 		try {
-			String str[] = resource.get().getText().split("\n");
-			al = Arrays.asList(str);
-			return al;
-		} catch (ResourceException e) {
-			al.add(e.toString());
-			return al;
-		} catch (IOException e) {
-			al.add(e.toString());
-			return al;
-		} 
-	}
-
-	public List<String> date(String dateD, String dateA){
-		// Create the client resource  
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/dateD/"+ dateD +"/dateA/"+ dateA);
-		List<String> al = new ArrayList<String>();
-		try {
-			String str[] = resource.get().getText().split("\n");
-			al = Arrays.asList(str);
-			return al;
-		} catch (ResourceException e) {
-			al.add(e.toString());
-			return al;
-		} catch (IOException e) {
-			al.add(e.toString());
-			return al;
-		} 
-	}
-
-	public List<String> city(String from, String to){
-		// Create the client resource  
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/from/"+ from +"/to/"+ to);
-		List<String> al = new ArrayList<String>();
-		try {
-			String str[] = resource.get().getText().split("\n");
-			al = Arrays.asList(str);
+			if(resource.get().getSize() == 0) {
+				al.add("We are sorry, but there is no trains with the selected filters");
+				return al;
+			}
+			al = Arrays.asList(resource.get().getText().split("\n"));
 			return al;
 		} catch (ResourceException e) {
 			al.add(e.toString());
@@ -61,14 +34,17 @@ public class Booking {
 			return al;
 		}
 	}
-	
-	public List<String> station(String fromStation, String toStation){
+
+	public List<String> date(String dateD, String dateA){
 		// Create the client resource  
-		ClientResource resource = new ClientResource("http://localhost:8182/trains/fromStation/"+ fromStation +"/toStation/"+ toStation);
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/dateD/"+ dateD +"/dateA/"+ dateA);
 		List<String> al = new ArrayList<String>();
 		try {
-			String str[] = resource.get().getText().split("\n");
-			al = Arrays.asList(str);
+			if(resource.get().getSize() == 0) {
+				al.add("We are sorry, but there is no trains with the selected filters");
+				return al;
+			}
+			al = Arrays.asList(resource.get().getText().split("\n"));
 			return al;
 		} catch (ResourceException e) {
 			al.add(e.toString());
@@ -76,6 +52,46 @@ public class Booking {
 		} catch (IOException e) {
 			al.add(e.toString());
 			return al;
-		} 
+		}
+	}
+
+	public List<String> city(String from, String to){
+		// Create the client resource  
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/from/"+ from +"/to/"+ to);
+		List<String> al = new ArrayList<String>();
+		try {
+			if(resource.get().getSize() == 0) {
+				al.add("We are sorry, but there is no trains with the selected filters");
+				return al;
+			}
+			al = Arrays.asList(resource.get().getText().split("\n"));
+			return al;
+		} catch (ResourceException e) {
+			al.add(e.toString());
+			return al;
+		} catch (IOException e) {
+			al.add(e.toString());
+			return al;
+		}
+	}
+
+	public List<String> station(String fromStation, String toStation){
+		// Create the client resource  
+		ClientResource resource = new ClientResource("http://localhost:8182/trains/fromStation/"+ fromStation +"/toStation/"+ toStation);
+		List<String> al = new ArrayList<String>();
+		try {
+			if(resource.get().getSize() == 0) {
+				al.add("We are sorry, but there is no trains with the selected filters");
+				return al;
+			}
+			al = Arrays.asList(resource.get().getText().split("\n"));
+			return al;
+		} catch (ResourceException e) {
+			al.add(e.toString());
+			return al;
+		} catch (IOException e) {
+			al.add(e.toString());
+			return al;
+		}
 	}
 }

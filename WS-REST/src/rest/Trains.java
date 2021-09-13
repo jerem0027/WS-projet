@@ -29,8 +29,13 @@ public class Trains extends ServerResource {
 	}
 	
 	@Get
-	public String allTrains() {
+	public String all() {
 		return db.select("SELECT * FROM train");
+	}
+	
+	@Get
+	public String allFilter(String sql) {
+    	return db.select(sql);
 	}
 	
 	@Get
