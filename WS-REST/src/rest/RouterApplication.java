@@ -109,14 +109,18 @@ public class RouterApplication extends Application{
             String name = form.getFirstValue("name");
             String pwd = form.getFirstValue("pwd");
             
-            setCurrentUserID(u.addUser(name, pwd));
+            int userId = u.addUser(name, pwd);
             
             String msg = "";
-            if(currentUserID == -1) {
-            	msg = "Cant create your account";
-            }else {
-            	msg = "Account created for " + name + ", user id is " + currentUserID;
-            }
+            switch (userId) {
+			case -1:
+				msg = "Cant create your account"; break;
+			case -2:
+				msg = "Username already exist"; break;
+			default:
+				msg = "Account created for " + name + ", user id is " + userId;
+				break;
+			}
 	        response.setEntity(msg, MediaType.TEXT_PLAIN);
 	    }
 	};

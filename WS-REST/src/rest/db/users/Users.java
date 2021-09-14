@@ -39,17 +39,23 @@ public class Users extends ServerResource{
 
 	@Get
 	public int addUser(String username, String pwd) {
+		String exist_query = "SELECT * FROM User WHERE name = '" + username + "'";
+		ResultSet rs_exist = this.db.selectRows(exist_query);
+		
+		try {
+			if(rs_exist.next())
+				return -2;
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		String query = "INSERT INTO User (name, password) "
 				+ "VALUES  ('" + username + "', '" + pwd + "')";
 		ResultSet rs = db.insertData(query);
 		int userId = -1;
 		try {
-			System.out.println(rs.toString());
 			if(rs.next()){
-
-				System.out.println(rs.toString());
 				userId = rs.getInt(1);
-				System.out.println(userId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
