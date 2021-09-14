@@ -35,4 +35,21 @@ public class Booking {
 			return al;
 		}
 	}
+
+	public String booking(int id, String type, boolean flexible, String name, String pwd){
+		System.out.println(id + " - " + type + " - " +  flexible);
+		ClientResource resource = new ClientResource(
+				"http://localhost:8182/booking/" + id + "?type=" + type +"&flexible="+ flexible 
+				+ "&name=" + name + "&pwd=" + pwd
+				);
+		String response = "";
+		try {
+			response = resource.get().getText();
+		} catch (ResourceException | IOException e) {
+			e.printStackTrace();
+			return e.toString();
+		}
+		System.out.println(response);
+		return response.equals("true") ? "Successful reservation" : response.equals("false") ? "Reservation error or the train " + id + " is not available" : response; 
+	}
 }

@@ -14,6 +14,9 @@ public class Users extends ServerResource{
 	public Users() {
 		this.db = new SQLiteConnection();
 	}
+	public Users(SQLiteConnection db) {
+		this.db = db;
+	}
 	
 	@Get
 	public int getUser(String username, String pwd) {
@@ -52,6 +55,15 @@ public class Users extends ServerResource{
 			e.printStackTrace();
 		}
 		return userId;
+		
+	}
+	
+	@Get
+	public String userTrains(int id) {		
+		String sql = "SELECT * FROM Train JOIN Ticket on ticket.train_id = train.id "
+				+ "WHERE Ticket.user_id = " + id;
+		System.out.println(sql);
+		return this.db.select(sql);
 		
 	}
 	
