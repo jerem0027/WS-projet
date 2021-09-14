@@ -32,6 +32,7 @@ public class RouterApplication extends Application{
 			String cityA = form.getFirstValue("cityA");
 			String cityD = form.getFirstValue("cityD");
 			String dateD = form.getFirstValue("dateD");
+            String dateA = form.getFirstValue("dateA");
 
 			ArrayList<String> array = new ArrayList<String>();
 			String nul = null;
@@ -50,6 +51,8 @@ public class RouterApplication extends Application{
 
 			if (dateD != nul)
 				array.add(" departure_date LIKE '" + dateD + "%' ");
+            if (dateA != nul)
+				array.add(" arrival_date LIKE '" + dateD + "%' ");
 
 			if (array.size() > 0) {
 				sql += " WHERE ";
@@ -59,50 +62,6 @@ public class RouterApplication extends Application{
 			}
 			System.out.println(sql);
 			response.setEntity(t.allFilter(sql), MediaType.TEXT_PLAIN);
-		}
-	};
-
-	Restlet city = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			// Print the user name of the requested orders
-			Trains t = new Trains();
-			String from = (String) request.getAttributes().get("from");
-			String to = (String) request.getAttributes().get("to");
-			response.setEntity(t.checkCity(from, to), MediaType.TEXT_PLAIN);
-		}
-	};
-
-	Restlet date = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			// Print the user name of the requested orders
-			Trains t = new Trains();
-			String dateD = (String) request.getAttributes().get("dateD");
-			String dateA = (String) request.getAttributes().get("dateA");
-			response.setEntity(t.checkDate(dateD, dateA), MediaType.TEXT_PLAIN);
-		}
-	};
-
-	Restlet seat = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			// Print the user name of the requested orders
-			Trains t = new Trains();
-			String ndTicket = (String) request.getAttributes().get("ndTicket");
-			String classT = (String) request.getAttributes().get("classT");
-			response.setEntity(t.checkSeat(ndTicket, classT), MediaType.TEXT_PLAIN);
-		}
-	};
-
-	Restlet station = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			// Print the user name of the requested orders
-			Trains t = new Trains();
-			String fromStation = (String) request.getAttributes().get("fromStation");
-			String toStation = (String) request.getAttributes().get("toStation");
-			response.setEntity(t.checkStation(fromStation, toStation), MediaType.TEXT_PLAIN);
 		}
 	};
 
@@ -165,10 +124,6 @@ public class RouterApplication extends Application{
 		// Defines only two routes
 
 		router.attach("/trains/all", allFilter);
-		router.attach("/trains/from/{from}/to/{to}", city);
-		router.attach("/trains/fromStation/{fromStation}/toStation/{toStation}", station);
-		router.attach("/trains/dateD/{dateD}/dateA/{dateA}", date);
-		router.attach("/trains/ndTicket/{ndTicket}/class/{classT}", seat);
 		router.attach("/trains", trainClass);
 
 		router.attach("/users", Users.class);
