@@ -11,12 +11,17 @@ import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 import org.restlet.routing.Router;
 
+import rest.db.SQLiteConnection;
 import rest.db.users.Users;
 
  
 public class RouterApplication extends Application{
+	private SQLiteConnection db;
 	private int currentUserID = -1 ;
 	
+	public RouterApplication(SQLiteConnection db) {
+		this.db = db;
+	}
 	
 	Restlet allTrains = new Restlet(getContext()) {
 	    @Override
@@ -116,8 +121,60 @@ public class RouterApplication extends Application{
             	msg = "Cant create your accoun";
             }else {
             	msg = "Account created for " + name + ", user id is " + currentUserID;
-            }            
+            }
 	        response.setEntity(msg, MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	Restlet booking = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+	    	Trains t = new Trains(getDB());
+	    	Users u = new Users(getDB());
+	    	
+            int id = Integer.parseInt((String)request.getAttributes().get("id"));
+            Form form = request.getResourceRef().getQueryAsForm();            
+            
+            String name = form.getFirstValue("name");
+            String pwd = form.getFirstValue("pwd");
+            int userID = u.getUser(name, pwd);
+            if(userID == -1) {
+            	response.setEntity("Wrong user or pwd", MediaType.TEXT_PLAIN);
+            	return;
+            }
+            
+            
+            String type = form.getFirstValue("type");
+            boolean flexible = form.getFirstValue("flexible") == "true";
+            int places = t.availablePlace(id, type);
+            if(places < 1) {
+            	response.setEntity("false", MediaType.TEXT_PLAIN);
+            	return;
+            }
+            if(t.bookTrain(id, type, flexible, userID))
+            	response.setEntity("true", MediaType.TEXT_PLAIN);
+            else
+            	response.setEntity("false", MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	Restlet infos = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+	        // Print the user name of the requested orders
+	    	Users u = new Users(getDB());
+	    	
+            Form form = request.getResourceRef().getQueryAsForm();            
+            
+            String name = form.getFirstValue("name");
+            String pwd = form.getFirstValue("pwd");
+            int userID = u.getUser(name, pwd);
+            if(userID == -1) {
+            	response.setEntity("Wrong user or pwd", MediaType.TEXT_PLAIN);
+            	return;
+            }  
+            System.out.println(u.userTrains(userID));
+	        response.setEntity(u.userTrains(userID), MediaType.TEXT_PLAIN);
 	    }
 	};
 	
@@ -138,9 +195,13 @@ public class RouterApplication extends Application{
 		router.attach("/trains/ndTicket/{ndTicket}/class/{classT}", seat);
 		router.attach("/trains", trainClass);
 
-		router.attach("/users", Users.class);
+		router.attach("/users/info", infos);
 		router.attach("/users/login", login);
 		router.attach("/users/register", register);
+		
+		router.attach("/booking/{id}", booking);
+		
+		
 		return router;
 	}
 	
@@ -149,13 +210,18 @@ public class RouterApplication extends Application{
 		System.out.println(this.currentUserID + " - " + id);
 	}
 	
+	private SQLiteConnection getDB() {
+		return this.db;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		// Create a new Restlet component and add a HTTP server connector to it  
 		Component component = new Component();  
 		component.getServers().add(Protocol.HTTP, 8182); 
  
 		// Attach the application to the component and start it  
-		component.getDefaultHost().attach(new RouterApplication());  
+		SQLiteConnection db = new SQLiteConnection();
+		component.getDefaultHost().attach(new RouterApplication(db));  
 		component.start();
 	}	
 }
