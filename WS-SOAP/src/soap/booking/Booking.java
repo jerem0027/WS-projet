@@ -95,4 +95,18 @@ public class Booking {
 		System.out.println(response);
 		return response.equals("true") ? "Successful reservation" : response.equals("false") ? "Reservation error or the train " + id + " is not available" : response; 
 	}
+	
+	public String unbook(int ticketID,  String name, String pwd){
+		System.out.println(ticketID + " - " + name + " - " +  pwd);
+		ClientResource resource = new ClientResource(
+				"http://localhost:8182/booking/cancel/" + ticketID + "?name=" + name + "&pwd=" + pwd
+		);
+		String response = "";
+		try {
+			return resource.get().getText();
+		} catch (ResourceException | IOException e) {
+			e.printStackTrace();
+			return e.toString();
+		}
+	}
 }

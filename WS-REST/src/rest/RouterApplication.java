@@ -173,8 +173,27 @@ public class RouterApplication extends Application{
             	response.setEntity("Wrong user or pwd", MediaType.TEXT_PLAIN);
             	return;
             }  
-            System.out.println(u.userTrains(userID));
 	        response.setEntity(u.userTrains(userID), MediaType.TEXT_PLAIN);
+	    }
+	};
+	
+	Restlet cancel = new Restlet(getContext()) {
+	    @Override
+	    public void handle(Request request, Response response) {
+	        // Print the user name of the requested orders
+	    	Users u = new Users(getDB());
+            
+            int ticketID = Integer.parseInt((String)request.getAttributes().get("id"));
+            Form form = request.getResourceRef().getQueryAsForm();       
+           
+            String name = form.getFirstValue("name");
+            String pwd = form.getFirstValue("pwd");
+            int userID = u.getUser(name, pwd);
+            if(userID == -1) {
+            	response.setEntity("Wrong user or pwd", MediaType.TEXT_PLAIN);
+            	return;
+            }  
+	        response.setEntity(u.cancelTrain(ticketID), MediaType.TEXT_PLAIN);
 	    }
 	};
 	
@@ -198,8 +217,9 @@ public class RouterApplication extends Application{
 		router.attach("/users/info", infos);
 		router.attach("/users/login", login);
 		router.attach("/users/register", register);
-		
+
 		router.attach("/booking/{id}", booking);
+		router.attach("/booking/cancel/{id}", cancel);
 		
 		
 		return router;

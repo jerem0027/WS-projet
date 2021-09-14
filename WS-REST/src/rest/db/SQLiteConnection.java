@@ -170,4 +170,18 @@ public class SQLiteConnection {
 		}
 		return false;
     }
+    
+    public int deleteQuery(String sql) {
+    	Connection conn = this.connect();
+    	Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			return stmt.executeUpdate(sql);
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+    }
+    
 }
