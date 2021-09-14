@@ -37,7 +37,7 @@ class User(Base):
 class Ticket(Base):
     __tablename__= "Ticket"
     
-    id = Column(Integer, primary_key=True)
+    ticket_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('User.id'))
     train_id = Column(Integer, ForeignKey('Train.id'))
     flexible = Column(Boolean, nullable=False)
