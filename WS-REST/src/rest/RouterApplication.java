@@ -72,6 +72,30 @@ public class RouterApplication extends Application{
 		}
 	};
 
+    Restlet allerRetour = new Restlet(getContext()) {
+		@Override
+		public void handle(Request request, Response response) {
+			// Print the user name of the requested orders
+			String res = "Trains Aller\n\n";
+			Trains t = new Trains();
+			Trains t2 = new Trains();
+
+			String aller = (String) request.getAttributes().get("aller");
+			String retour = (String) request.getAttributes().get("retour");
+			String dateD = (String) request.getAttributes().get("dateD");
+			String dateR = (String) request.getAttributes().get("dateR");
+
+			String sql = "SELECT * FROM train WHERE departure_city = '"+aller+"' AND arrival_city = '"+retour+"' AND departure_date LIKE '" + dateD + "%'";
+			res += t.allFilter(sql);
+			System.out.println(sql);
+			res += "\nTrains Retour\n\n";
+			sql = "SELECT * FROM train WHERE departure_city = '"+retour+"' AND arrival_city = '"+aller+"' AND departure_date LIKE '" + dateR + "%'";
+			res += t2.allFilter(sql);
+			System.out.println(sql);
+			response.setEntity(res, MediaType.TEXT_PLAIN);
+		}
+	};
+
 	Restlet trainClass = new Restlet(getContext()) {
 		@Override
 		public void handle(Request request, Response response) {
@@ -103,7 +127,7 @@ public class RouterApplication extends Application{
 	Restlet register = new Restlet(getContext()) {
 	    @Override
 	    public void handle(Request request, Response response) {
-            Users u = new Users();
+            Users u = new Users(getDB());
             Form form = request.getResourceRef().getQueryAsForm();            
             
             String name = form.getFirstValue("name");
@@ -208,6 +232,7 @@ public class RouterApplication extends Application{
 
 		router.attach("/trains/all", allFilter);
 		router.attach("/trains", trainClass);
+        router.attach("/trains/allerRetour/{aller}/{retour}/{dateD}/{dateR}", allerRetour);
 
 		router.attach("/users/info", infos);
 		router.attach("/users/login", login);
