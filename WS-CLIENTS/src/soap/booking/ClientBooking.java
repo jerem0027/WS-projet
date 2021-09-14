@@ -5,13 +5,13 @@ import soap.booking.BookingStub.All;
 
 public class ClientBooking {
 
-    public static void getAllTrains() throws RemoteException{
+    public void getAllTrains() throws RemoteException{
         BookingStub book = new BookingStub();
 		All s = new All();
 		display(book.all(s).get_return());
     }
 
-    public static void getFromFilter(String stationD, String stationA, String cityD, String cityA, String dateD, String dateA) throws RemoteException{
+    public void getFromFilter(String stationD, String stationA, String cityD, String cityA, String dateD, String dateA) throws RemoteException{
         BookingStub book = new BookingStub();
 		All s = new All();
 		s.setStationD(stationD);
@@ -24,18 +24,14 @@ public class ClientBooking {
         display(book.all(s).get_return());
     }
     
-    public static void display(String[] tab) {
+    public void display(String[] tab) {
     	for (String e:tab)
 			System.out.println(e);
     }
 
-	/**
-	 * @param args
-	 * @throws RemoteException 
-	 */
-	public static void main(String[] args) throws RemoteException {
+	public void runClient() throws RemoteException {
 		System.out.println("Client -- Get all trains - URL: http://localhost:8080/WS-SOAP-Project/services/Booking/all\n");
-		getAllTrains();
+		this.getAllTrains();
         System.out.println();
         System.out.println();
         
@@ -43,7 +39,7 @@ public class ClientBooking {
         System.out.println("- ville depart = Paris");
         System.out.println("- ville arrivé = Lyon");
         System.out.println("URL: http://localhost:8080/WS-SOAP-Project/services/Booking/all?cityD=Paris&cityA=Lyon\n");
-        getFromFilter(null, null, "Paris", "Lyon", null, null);
+        this.getFromFilter(null, null, "Paris", "Lyon", null, null);
         System.out.println();
         System.out.println();
         
