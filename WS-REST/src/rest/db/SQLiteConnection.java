@@ -11,8 +11,31 @@ import java.util.ArrayList;
 public class SQLiteConnection {
 	
     private String url;
+    private Connection conn;
+    
+    public SQLiteConnection() {
+    	try {
+			Class.forName("org.sqlite.JDBC");
+		} 
+    	catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+    	this.url = "jdbc:sqlite:" + System.getenv("DB_PATH");
+    	System.out.println(this.url);
+    	
+        // SQLite connection string
+        Connection conn = null;
+        try {
+            this.conn = DriverManager.getConnection(this.url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 	
     private Connection connect() {
+    	if(this.conn != null) {
+    		return this.conn;
+    	}
     	try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e1) {
@@ -87,10 +110,22 @@ public class SQLiteConnection {
         }
     }
     
+    public ResultSet selectRows(String sql){   	
+        try {
+        	Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             return stmt.executeQuery(sql);
+        } catch (SQLException e) { 
+        	e.printStackTrace();
+            return null;
+        }
+    }
+    
     public ResultSet performQuery(String sql) {
     	Connection conn = this.connect();
     	Statement stmt = null;
 		try {
+			System.out.println(sql);
 			stmt = conn.createStatement();
 			return stmt.executeQuery(sql);
 		} catch (SQLException e) {
@@ -98,6 +133,19 @@ public class SQLiteConnection {
 		}
 		return null;
     }
+    
+    public int performUpdate(String sql) {
+    	Connection conn = this.connect();
+    	Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			return stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+    }
+    
     public ResultSet insertData(String sql) {
     	Connection conn = this.connect();
     	PreparedStatement stmt = null;
@@ -110,4 +158,30 @@ public class SQLiteConnection {
 		}
 		return null;
     }
+    public boolean insertOnly(String sql) {
+    	Connection conn = this.connect();
+    	Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			return stmt.execute(sql);
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+    }
+    
+    public int deleteQuery(String sql) {
+    	Connection conn = this.connect();
+    	Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			return stmt.executeUpdate(sql);
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+    }
+    
 }
