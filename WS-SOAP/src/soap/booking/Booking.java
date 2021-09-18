@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.restlet.data.Form;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 
@@ -56,31 +57,34 @@ public class Booking {
 		}
 	}
 
-	public String booking(int id, String type, boolean flexible, String name, String pwd){
-		System.out.println(id + " - " + type + " - " +  flexible);
-		ClientResource resource = new ClientResource(
-				"http://localhost:8182/booking/" + id + "?type=" + type +"&flexible="+ flexible 
-				+ "&name=" + name + "&pwd=" + pwd
-				);
+	public String booking(int id, String type, boolean flexible, String name, String pwd){		
+		ClientResource resource = new ClientResource("http://localhost:8182/booking/");
+	
+		Form form = new Form();
+		form.add("id", Integer.toString(id));
+		form.add("type", type);
+		form.add("flexible", Boolean.toString(flexible));
+		form.add("userId", Integer.toString(1));
+		
+		
 		String response = "";
 		try {
-			response = resource.get().getText();
+			response = resource.post(form).getText();
 		} catch (ResourceException | IOException e) {
 			e.printStackTrace();
 			return e.toString();
 		}
-		System.out.println(response);
 		return response.equals("true") ? "Successful reservation" : response.equals("false") ? "Reservation error or the train " + id + " is not available" : response; 
 	}
 	
 	public String unbook(int ticketID,  String name, String pwd){
-		System.out.println(ticketID + " - " + name + " - " +  pwd);
-		ClientResource resource = new ClientResource(
-				"http://localhost:8182/booking/cancel/" + ticketID + "?name=" + name + "&pwd=" + pwd
-		);
-		String response = "";
+		ClientResource resource = new ClientResource("http://localhost:8182/booking/cancel/");	
+		
+		Form form = new Form();
+		form.add("ticketId", Integer.toString(ticketID));
+
 		try {
-			return resource.get().getText();
+			return resource.post(form).getText();
 		} catch (ResourceException | IOException e) {
 			e.printStackTrace();
 			return e.toString();
