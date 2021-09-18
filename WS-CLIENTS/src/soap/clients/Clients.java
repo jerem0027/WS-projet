@@ -8,7 +8,7 @@ import soap.account.ClientAccount;
 public class Clients {
 	
 	public static void main(String[] args) throws RemoteException {
-		String name = "france";
+		String name = "testing";
 		String pwd = "demo";
 		ClientAccount account = new ClientAccount(name, pwd);
 		account.register();
@@ -24,6 +24,6 @@ public class Clients {
 		booking.removeTrain(account.idBook);
 		
 		account.getInfo();
-		
+		booking.allerRetour("Paris", "Paris", "2021-11-28", "2023-02-28");
 	}
 }

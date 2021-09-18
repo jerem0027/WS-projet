@@ -56,9 +56,10 @@ public class SQLiteConnection {
     public ArrayList<String> selectList(String sql) {
     	ArrayList<String> rtn = new ArrayList<String>();
         try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql)){
+            
+            rtn.add("id | name | departure_station | departure_city | arrival_station | arrival_city | departure_date | arrival_date | nb_ticket_first | nb_ticket_business | nb_ticket_standard\n");
             // loop through the result set
             while (rs.next()) {
                 rtn.add(rs.getInt("id") + " | " +
@@ -91,6 +92,8 @@ public class SQLiteConnection {
              ResultSet rs    = stmt.executeQuery(sql)){
             
             // loop through the result set
+            rtn += "id | name | departure_station | departure_city | arrival_station | arrival_city | departure_date | arrival_date | nb_ticket_first | nb_ticket_business | nb_ticket_standard\n";
+
             while (rs.next()) {
                 rtn +=  rs.getInt("id") + " | " +
                         rs.getString("name") + " | " +

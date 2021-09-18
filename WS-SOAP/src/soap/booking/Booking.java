@@ -22,11 +22,13 @@ public class Booking {
         resource.addQueryParameter("dateA", dateA);
 		List<String> al = new ArrayList<String>();
 		try {
-			if(resource.get().getSize() == 0) {
+			al = Arrays.asList(resource.get().getText().split("\n"));
+			if(al.size() == 1) {
+				al = new ArrayList<String>();
 				al.add("We are sorry, but there is no trains with the selected filters");
 				return al;
 			}
-			al = Arrays.asList(resource.get().getText().split("\n"));
+			
 			return al;
 		} catch (ResourceException e) {
 			al.add(e.toString());
@@ -41,11 +43,12 @@ public class Booking {
     	ClientResource resource = new ClientResource("http://localhost:8182/trains/allerRetour/"+cityD+"/"+cityA+"/"+dateD+"/"+dateR);
 		List<String> al = new ArrayList<String>();
 		try {
-			if(resource.get().getSize() == 0) {
+			al = Arrays.asList(resource.get().getText().split("\n"));
+			if(al.size() == 1) {
+				al = new ArrayList<String>();
 				al.add("We are sorry, but there is no trains with the selected filters");
 				return al;
 			}
-			al = Arrays.asList(resource.get().getText().split("\n"));
 			return al;
 		} catch (ResourceException e) {
 			al.add(e.toString());
