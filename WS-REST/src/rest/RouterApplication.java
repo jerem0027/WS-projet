@@ -76,7 +76,8 @@ public class RouterApplication extends Application{
 		@Override
 		public void handle(Request request, Response response) {
 			// Print the user name of the requested orders
-			String res = "Trains Aller\n\n";
+
+            String res = "\nTrains Aller\n\n";
 			Trains t = new Trains();
 			Trains t2 = new Trains();
 

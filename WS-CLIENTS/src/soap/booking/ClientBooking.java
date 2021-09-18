@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import soap.booking.BookingStub.All;
 import soap.booking.BookingStub.Booking;
 import soap.booking.BookingStub.Unbook ;
+import soap.booking.BookingStub.AllerRetour;
 import soap.account.ClientAccount;
 
 public class ClientBooking {
@@ -83,7 +84,33 @@ public class ClientBooking {
         System.out.println();
         System.out.println();
         
+        System.out.println("Client -- Get trains by filters :");
+        System.out.println("- ville depart = Paris");
+        System.out.println("- ville arrivé = Paris");
+        System.out.println("- station depart = Gare Montparnasse");
+        System.out.println("- date depart = 2021-11-28");
+        System.out.println("URL: http://localhost:8080/WS-SOAP-Project/services/Booking/all?stationD=Gare%20Montparnasse&cityD=Paris&cityA=Paris&dateD=2021-11-28\n");
+        getFromFilter("Gare Montparnasse", null, "Paris", "Lyon", "2021-11-28", null);
+        System.out.println();
+        System.out.println();
+        
         System.out.println("");
+	}
+	
+	public void allerRetour(String cityD, String cityA, String dateD, String dateR) throws RemoteException {
+		System.out.println("Client -- Get aller-retour - URL: http://localhost:8080/WS-SOAP-Project/services/Booking/allerRetour?cityD="+cityD+"&cityA="+cityA+"&dateD="+dateD+"&dateR="+dateR+"\n");
+        System.out.println("- Ville depart = "+ cityD);
+        System.out.println("- Ville arrivé = "+cityA);
+        System.out.println("- Date depart = "+dateD);
+        System.out.println("- Date retour = "+dateR);
+		BookingStub book = new BookingStub();
+		AllerRetour a = new AllerRetour();
+		a.setCityD(cityD);
+		a.setCityA(cityA);
+		a.setDateD(dateD);
+		a.setDateR(dateR);
+        display(book.allerRetour(a).get_return());
+        System.out.println();
 	}
 	
 	public void runClientBooking() throws RemoteException {

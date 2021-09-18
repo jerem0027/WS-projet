@@ -45,6 +45,22 @@
 
         
            /**
+            * auto generated Axis2 call back method for allerRetour method
+            * override this method for handling normal response from allerRetour operation
+            */
+           public void receiveResultallerRetour(
+                    soap.booking.BookingStub.AllerRetourResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from allerRetour operation
+           */
+            public void receiveErrorallerRetour(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for unbook method
             * override this method for handling normal response from unbook operation
             */
