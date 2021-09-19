@@ -14,7 +14,6 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
 import rest.db.SQLiteConnection;
-import rest.db.users.Users;
 
 
 public class RouterApplication extends Application{
