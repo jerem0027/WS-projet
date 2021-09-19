@@ -122,7 +122,6 @@ public class RouterApplication extends Application{
 	public synchronized Restlet createInboundRoot() {
 		// Create a router Restlet that routes each call to a new respective instance of resource.
 		Router router = new Router(getContext());
-		// Defines only two routes
 
 		router.attach("/trains/all", allFilter);
 		router.attach("/trains", trainClass);

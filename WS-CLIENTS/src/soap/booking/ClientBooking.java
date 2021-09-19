@@ -57,7 +57,7 @@ public class ClientBooking {
     
     public void display(String[] tab) {
     	for (String e:tab)
-			System.out.println(e);
+			System.out.print(e);
     }
 
 	public void runClientGet() throws RemoteException {
