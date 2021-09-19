@@ -1,5 +1,8 @@
 package rest;
 
+import java.util.ArrayList;
+
+
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
@@ -66,51 +69,6 @@ public class RouterApplication extends Application{
 		}
 	};
 
-	Restlet login = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			Users u = new Users();
-			Form form = request.getResourceRef().getQueryAsForm();            
-
-			String name = form.getFirstValue("name");
-			String pwd = form.getFirstValue("pwd");
-
-			setCurrentUserID(u.getUser(name, pwd));
-			String msg = "";
-			if(currentUserID == -1) {
-				msg = "Wrong user or pwd";
-			}else {
-				msg = "Authenticated as " + name + ", user id is " + currentUserID;
-			}            
-			response.setEntity(msg, MediaType.TEXT_PLAIN);
-		}
-	};
-
-	Restlet register = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			Users u = new Users(getDB());
-			Form form = request.getResourceRef().getQueryAsForm();            
-
-			String name = form.getFirstValue("name");
-			String pwd = form.getFirstValue("pwd");
-
-			int userId = u.addUser(name, pwd);
-
-			String msg = "";
-			switch (userId) {
-			case -1:
-				msg = "Cant create your account"; break;
-			case -2:
-				msg = "Username already exist"; break;
-			default:
-				msg = "Account created for " + name + ", user id is " + userId;
-				break;
-			}
-			response.setEntity(msg, MediaType.TEXT_PLAIN);
-		}
-	};
-
 	Restlet booking = new Restlet(getContext()) {
 		@Override
 		public void handle(Request request, Response response) {
@@ -138,22 +96,13 @@ public class RouterApplication extends Application{
 	};
 
 	Restlet infos = new Restlet(getContext()) {
-		@Override
-		public void handle(Request request, Response response) {
-			// Print the user name of the requested orders
-			Users u = new Users(getDB());
-
-			Form form = request.getResourceRef().getQueryAsForm();            
-
-			String name = form.getFirstValue("name");
-			String pwd = form.getFirstValue("pwd");
-			int userID = u.getUser(name, pwd);
-			if(userID == -1) {
-				response.setEntity("Wrong user or pwd", MediaType.TEXT_PLAIN);
-				return;
-			}  
-			response.setEntity(u.userTrains(userID), MediaType.TEXT_PLAIN);
-		}
+	    @Override
+	    public void handle(Request request, Response response) {
+	        // Print the user name of the requested orders
+	    	Trains t = new Trains(getDB());
+	    	int uid = Integer.parseInt((String) request.getAttributes().get("id"));
+	        response.setEntity(t.userTrains(uid), MediaType.TEXT_PLAIN);
+	    }
 	};
 
 	Restlet cancel = new Restlet(getContext()) {
@@ -185,9 +134,7 @@ public class RouterApplication extends Application{
 		router.attach("/trains", trainClass);
 		router.attach("/trains/allerRetour/{aller}/{retour}/{dateD}/{dateR}", allerRetour);
 
-		router.attach("/users/info", infos);
-		router.attach("/users/login", login);
-		router.attach("/users/register", register);
+		router.attach("/users/info/{id}", infos);
 
 		router.attach("/booking/", booking);
 		router.attach("/booking/cancel/", cancel);

@@ -64,36 +64,4 @@ public class Users extends ServerResource{
 		return userId;
 
 	}
-
-	@Get
-	public String userTrains(int id) {	
-		String[] columns = {
-				"ticket_id", "type", "train_id", "departure_station", "departure_city", "departure_date",
-				"arrival_station", "arrival_city", "arrival_date"
-		};
-		String sql = "SELECT * FROM Train JOIN Ticket on ticket.train_id = train.id "
-				+ "WHERE Ticket.user_id = " + id;
-		ResultSet rs = this.db.performQuery(sql);
-		StringBuilder sb = new StringBuilder();
-		try {
-			sb.append("My Trains\n");
-			for(String col : columns)
-				sb.append(col + " | ");
-			sb.append('\n');
-			while(rs.next()) {
-				for(String col : columns)
-					sb.append(rs.getString(col) + " | ");
-				sb.append("\n");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return sb.toString();
-
-	}
-
-
-
-
 }

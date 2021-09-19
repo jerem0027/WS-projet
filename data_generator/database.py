@@ -44,13 +44,13 @@ class Ticket(Base):
     type = Column(String, nullable=False)
 
 
-class Database:
+class DatabaseREST:
     def __init__(self):
-        engine = create_engine("sqlite:///ti_ji_wi.db")
+        engine = create_engine("sqlite:///rest.db")
         inspector = inspect(engine)
         
         TABLES = [
-            Train, User, Ticket
+            Train, Ticket
         ]
         for instance in TABLES:
             table = instance.metadata.tables[instance.__tablename__]
@@ -71,6 +71,24 @@ class Database:
             self.session.add(train)
         self.session.commit()
 
+class DatabaseSOAP:
+    def __init__(self):
+        engine = create_engine("sqlite:///soap.db")
+        inspector = inspect(engine)
+        
+        TABLES = [User]
+        for instance in TABLES:
+            table = instance.metadata.tables[instance.__tablename__]
+            table.create(engine)
+            
+            instance.metadata.bind = engine
+            
+        DBSession.bind = engine
+        
+        self.session = DBSession()
+        self.session.bind = engine
+        self.engine = engine
+
     def generate_users(self):
         names = ["Alice", "Bob", "Charly", "David"]
         for name in names: 
@@ -79,6 +97,8 @@ class Database:
         self.session.commit()
 
 if __name__ == "__main__":
-    database = Database()
-    database.generate_users()
-    database.generate_trains()
+    databaseREST = DatabaseREST()
+    databaseREST.generate_trains()
+    
+    databaseSOAP = DatabaseSOAP()
+    databaseSOAP.generate_users()
