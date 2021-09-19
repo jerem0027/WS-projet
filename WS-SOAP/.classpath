@@ -13,7 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/home/jeremie/Bureau/ensiie/WS-projet/WS-SOAP/json-20210307.jar"/>
-	<classpathentry kind="lib" path="/home/jeremie/Bureau/ensiie/WS-projet/WS-SOAP/org.restlet.jar"/>
+	<classpathentry kind="lib" path="json-20210307.jar"/>
+	<classpathentry kind="lib" path="org.restlet.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
