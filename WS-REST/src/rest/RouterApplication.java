@@ -1,14 +1,5 @@
 package rest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
-import java.util.ArrayList;
-
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
@@ -17,7 +8,6 @@ import org.restlet.Restlet;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
-import org.restlet.representation.Representation;
 import org.restlet.routing.Router;
 
 import rest.db.SQLiteConnection;
@@ -122,29 +112,29 @@ public class RouterApplication extends Application{
 	};
 
 	Restlet booking = new Restlet(getContext()) {
-	    @Override
-	    public void handle(Request request, Response response) {
-	    	Trains t = new Trains(getDB());
-	    	
-            Form form = new Form(request.getEntity());;            
-            System.out.println(form.toString());
-        
-            int id = Integer.parseInt(form.getFirstValue("id"));  
-            String type = form.getFirstValue("type");  
-            boolean flexible = form.getFirstValue("flexible") == "true";  
-            int userId = Integer.parseInt(form.getFirstValue("userId"));  
-            
-  
-            int places = t.availablePlace(id, type);
-            if(places < 1) {
-            	response.setEntity("false", MediaType.TEXT_PLAIN);
-            	return;
-            }
-            if(t.bookTrain(id, type, flexible, userId))
-            	response.setEntity("true", MediaType.TEXT_PLAIN);
-            else
-            	response.setEntity("false", MediaType.TEXT_PLAIN);
-	    }
+		@Override
+		public void handle(Request request, Response response) {
+			Trains t = new Trains(getDB());
+
+			Form form = new Form(request.getEntity());;            
+			System.out.println(form.toString());
+
+			int id = Integer.parseInt(form.getFirstValue("id"));  
+			String type = form.getFirstValue("type");  
+			boolean flexible = form.getFirstValue("flexible") == "true";  
+			int userId = Integer.parseInt(form.getFirstValue("userId"));  
+
+
+			int places = t.availablePlace(id, type);
+			if(places < 1) {
+				response.setEntity("false", MediaType.TEXT_PLAIN);
+				return;
+			}
+			if(t.bookTrain(id, type, flexible, userId))
+				response.setEntity("true", MediaType.TEXT_PLAIN);
+			else
+				response.setEntity("false", MediaType.TEXT_PLAIN);
+		}
 	};
 
 	Restlet infos = new Restlet(getContext()) {
@@ -167,18 +157,18 @@ public class RouterApplication extends Application{
 	};
 
 	Restlet cancel = new Restlet(getContext()) {
-	    @Override
-	    public void handle(Request request, Response response) {
-	    	Trains t = new Trains(getDB());
-	    	
-            Form form = new Form(request.getEntity());;            
-            System.out.println(form.toString());
-	    	
-	    	
-            int ticketID = Integer.parseInt(form.getFirstValue("ticketId"));
+		@Override
+		public void handle(Request request, Response response) {
+			Trains t = new Trains(getDB());
 
-	        response.setEntity(t.cancelTrain(ticketID), MediaType.TEXT_PLAIN);
-	    }
+			Form form = new Form(request.getEntity());;            
+			System.out.println(form.toString());
+
+
+			int ticketID = Integer.parseInt(form.getFirstValue("ticketId"));
+
+			response.setEntity(t.cancelTrain(ticketID), MediaType.TEXT_PLAIN);
+		}
 	};
 
 
@@ -201,7 +191,7 @@ public class RouterApplication extends Application{
 
 		router.attach("/booking/", booking);
 		router.attach("/booking/cancel/", cancel);
-	
+
 		return router;
 	}
 
