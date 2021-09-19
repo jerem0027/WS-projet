@@ -23,9 +23,9 @@ public class SQLiteConnection {
     	System.out.println(this.url);
     	
         // SQLite connection string
-        Connection conn = null;
+        //Connection conn = null;
         try {
-            this.conn = DriverManager.getConnection(this.url);
+            SQLiteConnection.conn = DriverManager.getConnection(this.url);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -33,7 +33,7 @@ public class SQLiteConnection {
 	
     public ResultSet selectRows(String sql){   	
         try {
-             Statement stmt  = this.conn.createStatement();
+             Statement stmt  = SQLiteConnection.conn.createStatement();
              return stmt.executeQuery(sql);
         } catch (SQLException e) { 
         	e.printStackTrace();
@@ -57,7 +57,7 @@ public class SQLiteConnection {
     	Statement stmt = null;
 		try {
 			System.out.println(sql);
-			stmt = this.conn.createStatement();
+			stmt = SQLiteConnection.conn.createStatement();
 			return stmt.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();

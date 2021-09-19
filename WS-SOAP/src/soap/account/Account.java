@@ -18,7 +18,7 @@ public class Account extends Soap {
 
 	public String register(String name, String pwd) {		
 		int userId = this.addUser(name, pwd);
-    switch (userId) {
+		switch (userId) {
 		case -1:
 			return "Cant create your account";
 		case -2:
@@ -27,22 +27,22 @@ public class Account extends Soap {
 			return "Account created for " + name + ", user id is " + userId;
 		}
 	}
-	
+
 	public List<String> info(String name, String pwd) {
-		String url = this.baseURL + "/users/info/";
+		String url = Soap.baseURL + "/users/info/";
 		List<String> al = new ArrayList<String>();
-		
+
 		int id = this.getUser(name, pwd);
 		if(id == -1) {
 			al.add("Wrong user or password");
 			return al;
 		}
 		url += id;
-	
+
 		al = Arrays.asList(this.userRequest(url).split("\n"));
 		return al;
 	}
-	
+
 	private String userRequest(String url) {
 		ClientResource ressource = new ClientResource(url);
 		try {			
@@ -54,11 +54,11 @@ public class Account extends Soap {
 			return e.toString();
 		}
 	}
-	
-	
+
+
 	private int addUser(String name, String pwd) {
 		String exist_query = "SELECT * FROM User WHERE name = '" + name + "'";
-		ResultSet rs_exist = this.db.selectRows(exist_query);
+		ResultSet rs_exist = Soap.db.selectRows(exist_query);
 		try {
 			if(rs_exist.next())
 				return -2;
@@ -67,10 +67,10 @@ public class Account extends Soap {
 			e1.printStackTrace();
 			return -2;
 		}
-		
+
 		String query = 
 				"INSERT INTO User (name, password) "
-				+ "VALUES  ('" + name + "', '" + pwd + "')";
+						+ "VALUES  ('" + name + "', '" + pwd + "')";
 		ResultSet rs = db.insertData(query);
 		int userId = -1;
 		try {
@@ -81,6 +81,6 @@ public class Account extends Soap {
 			e.printStackTrace();
 		}
 		return userId;
-		
+
 	}
 }

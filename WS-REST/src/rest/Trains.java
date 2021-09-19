@@ -21,7 +21,6 @@ public class Trains extends ServerResource {
 		this.db = db;
 	}
 
-
 	@Get
 	public String toString() {
 		String a = "<a href='http://localhost:8182";

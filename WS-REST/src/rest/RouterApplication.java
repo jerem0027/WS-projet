@@ -1,8 +1,5 @@
 package rest;
 
-import java.util.ArrayList;
-
-
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Request;
@@ -18,8 +15,6 @@ import rest.db.SQLiteConnection;
 
 public class RouterApplication extends Application{
 	private SQLiteConnection db;
-	private int currentUserID = -1 ;
-
 
 	public RouterApplication(SQLiteConnection db) {
 		this.db = db;
@@ -139,11 +134,6 @@ public class RouterApplication extends Application{
 		router.attach("/booking/cancel/", cancel);
 
 		return router;
-	}
-
-	private void setCurrentUserID(int id) {
-		this.currentUserID = id;
-		System.out.println(this.currentUserID + " - " + id);
 	}
 
 	private SQLiteConnection getDB() {
