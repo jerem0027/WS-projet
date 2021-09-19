@@ -1,6 +1,8 @@
 package soap.booking;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +11,12 @@ import org.restlet.data.Form;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 
+import soap.db.SQLiteConnection;
+import soap.main.Soap;
 
-public class Booking {
-	
+
+public class Booking extends Soap {
+	static private SQLiteConnection db = new SQLiteConnection();
 
 	public List<String> all(String stationD, String stationA, String cityA, String cityD, String dateD, String dateA) {
 		ClientResource resource = new ClientResource("http://localhost:8182/trains/all");
@@ -61,13 +66,19 @@ public class Booking {
 	}
 
 	public String booking(int id, String type, boolean flexible, String name, String pwd){		
-		ClientResource resource = new ClientResource("http://localhost:8182/booking/");
+		String url = this.baseURL + "/booking/";
+		int uid = this.getUser(name, pwd);
+		if(uid == -1) {
+			return "Wrong user or password";
+		}		
+		
+		ClientResource resource = new ClientResource(url);
 	
 		Form form = new Form();
 		form.add("id", Integer.toString(id));
 		form.add("type", type);
 		form.add("flexible", Boolean.toString(flexible));
-		form.add("userId", Integer.toString(1));
+		form.add("userId", Integer.toString(uid));
 		
 		
 		String response = "";
