@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="org.restlet.jar"/>
 	<classpathentry kind="lib" path="sqlite-jdbc-3.7.2.jar"/>
-	<classpathentry kind="lib" path="/home/jeremie/Bureau/ensiie/WS-projet/WS-SOAP/json-20210307.jar"/>
+	<classpathentry kind="lib" path="json-20210307.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
