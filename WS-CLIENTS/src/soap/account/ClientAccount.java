@@ -36,7 +36,7 @@ public class ClientAccount {
         System.out.println("Client -- Get user Informations - URL: URL: http://localhost:8080/WS-SOAP-Project/services/Account/info?name="+this.name+"&pwd="+this.pwd+"\n");
         display(acc.info(i).get_return());
         if(acc.info(i).get_return().length > 2)
-        	this.idBook = Integer.parseInt(acc.info(i).get_return()[2].split("|")[0]);
+        	this.idBook = Integer.parseInt(acc.info(i).get_return()[2].split(" | ")[0]);
         System.out.println();
         System.out.println();
     }
