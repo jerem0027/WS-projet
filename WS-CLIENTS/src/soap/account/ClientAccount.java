@@ -32,17 +32,17 @@ public class ClientAccount {
 		Info i = new Info();
 		i.setName(this.name);
 		i.setPwd(this.pwd);
-		System.out.println("Client -- Get user Informations - URL: URL: http://localhost:8080/WS-SOAP-Project/services/Account/info?name="+this.name+"&pwd="+this.pwd+"\n");
-		display(acc.info(i).get_return());
-		if(acc.info(i).get_return().length > 2)
-			this.idBook = Integer.parseInt(acc.info(i).get_return()[2].split("|")[0]);
-		System.out.println();
-		System.out.println();
-	}
-
-	public void display(String[] tab) {
-		for (String e:tab)
-			System.out.println(e);
-	}
+    System.out.println("Client -- Get user Informations - URL: URL: http://localhost:8080/WS-SOAP-Project/services/Account/info?name="+this.name+"&pwd="+this.pwd+"\n");
+    display(acc.info(i).get_return());
+    if(acc.info(i).get_return().length > 2)
+        this.idBook = Integer.parseInt(acc.info(i).get_return()[2].split(" | ")[0]);
+     System.out.println();
+     System.out.println();
+  }
+    
+  public void display(String[] tab) {
+    	for (String e:tab)
+			  System.out.println(e);
+  }
 
 }

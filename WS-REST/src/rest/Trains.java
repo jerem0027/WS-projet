@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import rest.db.SQLiteConnection;
@@ -58,8 +59,8 @@ public class Trains extends ServerResource {
 		}
 		return -1;
 	}
-
-	@Get
+	
+	@Post
 	public boolean bookTrain(int trainId, String type, boolean flexible, int userID) {
 		String columnName = "nb_ticket_" + type;
 		String sql_update = "UPDATE Train SET " + columnName + " = " + columnName + " - 1 WHERE id = " + trainId;
@@ -71,5 +72,40 @@ public class Trains extends ServerResource {
 		System.out.println(a + " -- " + b);
 
 		return a && b;
+	}
+	
+	@Post
+	public String cancelTrain(int ticketId) {		
+		String sql_select = "SELECT * FROM Ticket WHERE ticket_id = " + ticketId;
+
+		System.out.println(sql_select);
+		ResultSet rs = this.db.selectRows(sql_select);
+		if(rs == null) {
+			return "Cant find your ticket";
+		}
+
+		int trainID = -1;
+		String type = "";
+		try {
+			while(rs.next()) {
+				trainID = rs.getInt("train_id");
+				type = rs.getString("type");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Cant find your ticket";
+		}
+
+		String sql_delete = "DELETE FROM Ticket WHERE ticket_id = " + ticketId;
+		System.out.println(sql_delete);
+		if(this.db.deleteQuery(sql_delete) != 1) {
+			return "Cant delete your ticket";
+		}
+
+		String columnName = "nb_ticket_" + type.toLowerCase();
+		String sql_update = "UPDATE Train SET " + columnName + " = " + columnName + " + 1 WHERE id = " + trainID;
+
+		System.out.println(sql_update);
+		return this.db.performUpdate(sql_update) == 1 ? "Ticket cancel successfully " : "Ticket remove error";
 	}
 }
