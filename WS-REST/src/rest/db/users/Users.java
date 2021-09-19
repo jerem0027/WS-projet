@@ -3,9 +3,7 @@ package rest.db.users;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import rest.db.SQLiteConnection;
@@ -39,19 +37,19 @@ public class Users extends ServerResource{
 		return nb == 1 ? userId : -1;
 	}
 
-	
+
 	@Get
 	public int addUser(String username, String pwd) {
 		String exist_query = "SELECT * FROM User WHERE name = '" + username + "'";
 		ResultSet rs_exist = this.db.selectRows(exist_query);
-		
+
 		try {
 			if(rs_exist.next())
 				return -2;
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		String query = "INSERT INTO User (name, password) "
 				+ "VALUES  ('" + username + "', '" + pwd + "')";
 		ResultSet rs = db.insertData(query);
@@ -90,7 +88,7 @@ public class Users extends ServerResource{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return sb.toString();
 
 	}

@@ -12,6 +12,7 @@ import org.restlet.resource.ResourceException;
 public class Account {
 	static private String baseURL = "http://localhost:8182";
 	
+	@SuppressWarnings("unused")
 	private String connect(String name, String pwd) {
 		String url = Account.baseURL + "/users/login";
 		return this.userRequest(url, name, pwd); 
