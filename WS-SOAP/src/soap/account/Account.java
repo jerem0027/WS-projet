@@ -18,7 +18,7 @@ public class Account extends Soap {
 
 	public String register(String name, String pwd) {		
 		int userId = this.addUser(name, pwd);
-        switch (userId) {
+    switch (userId) {
 		case -1:
 			return "Cant create your account";
 		case -2:
