@@ -5,7 +5,6 @@ import soap.booking.BookingStub.All;
 import soap.booking.BookingStub.Booking;
 import soap.booking.BookingStub.Unbook ;
 import soap.booking.BookingStub.AllerRetour;
-import soap.account.ClientAccount;
 
 public class ClientBooking {
 	
